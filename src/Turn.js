@@ -55,7 +55,7 @@ class Turn {
       }
     }
 
-    let lastPlataform = 100000000000
+    let lastPlataform = 10000
     nextTurn.plataforms.forEach((plataform) => {
       let top = plataform.getLocalBounds().top
       if (top < lastPlataform) lastPlataform = top

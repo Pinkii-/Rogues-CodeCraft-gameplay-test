@@ -64,6 +64,8 @@ class Game {
     if (pos == null) {
       pos = this.sockets.length
       this.sockets.push(socket)
+    } else {
+      this.sockets[pos] = socket
     }
     this.players[socketid] = pos
     this.turn.addPlayer(pos)
