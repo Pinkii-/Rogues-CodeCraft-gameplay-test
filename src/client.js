@@ -6,7 +6,7 @@ const {Turn} = require('./Turn.js')
 const {Player} = require('./Player.js')
 const {Plataform} = require('./Plataform.js')
 const C = require('./constants.js')
-const clearColor = 'white'
+const clearColor = 'black'
 
 var game = new Game()
 
@@ -47,10 +47,12 @@ myCanvas.height = window.innerHeight
 const ctx = myCanvas.getContext('2d')
 
 function renderGame () {
+  ctx.globalAlpha = 0.2
   ctx.fillStyle = clearColor
   ctx.fillRect(0, 0, myCanvas.width, myCanvas.height)
   ctx.save()
   ctx.translate(0, myCanvas.height - game.turn.minPosition)
+  ctx.globalAlpha = 1
   // debugger
   var thingsToDraw = game.turn.getLocalsBounds()
 

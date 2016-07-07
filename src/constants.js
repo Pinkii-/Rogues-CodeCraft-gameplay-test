@@ -14,7 +14,7 @@ module.exports = {
   MAP_WIDTH: 50,
   MAP_HEIGHT: 50,
 
-  COLORS: ['black', 'red', 'blue', 'cyan', 'purple', 'yellow', 'orange', 'green', 'pink', 'grey', 'teal', 'brown'],
+  COLORS: ['white', 'red', 'blue', 'cyan', 'purple', 'yellow', 'orange', 'green', 'pink', 'grey', 'teal', 'brown'],
 
   // Three char code
   WAL: 1, // WALL
