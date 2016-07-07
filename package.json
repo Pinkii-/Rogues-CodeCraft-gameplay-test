@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.14.0"
+  },
   "devDependencies": {
     "browserify": "^13.0.1",
     "chokidar-cli": "^1.2.0",
