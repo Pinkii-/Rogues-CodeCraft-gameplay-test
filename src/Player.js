@@ -1,18 +1,18 @@
 const C = require('./constants.js')
-const Util = require('./util.js')
-const clone = require('clone')
 
 class Player {
-  constructor (board, x, y) {
-    this.board = board
+  constructor (x, y) {
     this.position = {x, y}
     this.velocity = {x: 0, y: 0}
     this.landed = true
+    this.alive = true
+    this.size = {x: C.PLAYER_WIDTH, y: C.PLAYER_HEIGHT}
+    this.origin = {x: this.size.x / 2, y: this.size.y / 2}
   }
 
   applyInput (input) {
     if (this.landed && (C.JUMP & input) > 0) {
-      this.velocity.y = C.JUMP_SPEED
+      this.velocity.y = -C.JUMP_SPEED
       this.landed = false
     }
     if ((C.LEFT & input) > 0) {
@@ -27,34 +27,38 @@ class Player {
     var direction = this.velocity.x === 0 ? 0 : Math.abs(this.velocity.x) / this.velocity.x
     if (Math.abs(this.velocity.x) > 0.1) this.velocity.x -= C.FRICTION * deltaTime * direction
     else this.velocity.x = 0
-    this.velocity.y -= C.GRAVITY * deltaTime
+    this.velocity.y += C.GRAVITY * deltaTime
 
     // console.log(this.velocity.x, this.velocity.y)
 
-    var position = clone(this.position)
-    position.x += this.velocity.x * deltaTime
-    position.y += this.velocity.y * deltaTime
+    this.position.x += this.velocity.x * deltaTime
+    this.position.y += this.velocity.y * deltaTime
+  }
 
-    // console.log(deltaTime, position.x, position.y)
-
-    if (!this.isInsideWall(position)) { // Shame phisics
-      this.position = position
-    } else if (!this.isInsideWall({x: position.x, y: this.position.y})) {
-      this.position.x = position.x
-      if (this.velocity.y < 0) this.landed = true
-      this.velocity.y = 0
-    } else if (!this.isInsideWall({x: this.position.x, y: position.y})) {
-      this.position.y = position.y
+  correctOutsideMap (left, right) {
+    if (this.position.x + this.origin.x - this.size.x < left && this.velocity.x <= 0) {
+      this.position.x = left + this.size.x - this.origin.x
       this.velocity.x = 0
-    } else {
-      if (this.velocity.y < 0) this.landed = true
-      this.velocity = {x: 0, y: 0}
+    } else if (this.position.x + this.origin.x + this.size.x > right && this.velocity.x >= 0) {
+      this.position.x = right - this.size.x + this.origin.x
+      this.velocity.x = 0
     }
   }
 
-  isInsideWall (pos) {
-    let realpos = Util.realToBoard(this.board, pos)
-    return this.board[Math.floor(realpos.y)][Math.floor(realpos.x)] !== C.AIR
+  applyVerticalWallCollision () {
+    this.landed = true
+    if (this.velocity.y > 0) {
+      this.velocity.y = 0
+    }
+  }
+
+  getLocalBounds () {
+    return {
+      left: this.position.x - this.origin.x,
+      top: this.position.y - this.origin.y,
+      width: this.size.x,
+      height: this.size.y
+    }
   }
 }
 
