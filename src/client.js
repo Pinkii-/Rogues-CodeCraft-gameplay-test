@@ -1,11 +1,40 @@
 /* global myCanvas */
-// const io = require('socket.io-client')
+const io = require('socket.io-client')
+const socket = io()
 const {Game} = require('./Game.js')
+const {Turn} = require('./Turn.js')
+const {Player} = require('./Player.js')
+const {Plataform} = require('./Plataform.js')
 const C = require('./constants.js')
 const clearColor = 'white'
 
 var game = new Game()
-game.onPlayerJoin()
+
+function onGameState (g) {
+  let turn = new Turn()
+  Object.assign(turn, g.turn)
+  game.turn = turn
+  let players = game.turn.players
+  for (let n = 0; n < players.length; ++n) {
+    let aux = new Player()
+    Object.assign(aux, players[n])
+    players[n] = aux
+  }
+  let plataforms = game.turn.plataforms
+  for (let n = 0; n < plataforms.length; ++n) {
+    let aux = new Plataform()
+    Object.assign(aux, plataforms[n])
+    plataforms[n] = aux
+  }
+  renderGame()
+  console.log('recibing shiet')
+}
+
+socket.on('connect', () => {
+  socket.on('game:state', onGameState)
+})
+
+// game.onPlayerJoin()
 var input = 0
 
 var fixedDeltaTime = (1 / 60.0) * 1000
@@ -52,11 +81,12 @@ function renderGame () {
   // ctx.fillRect(0, (C.MAP_HEIGHT - game.turn.minPosition) * edge, C.MAP_WIDTH * edge, 5)
 }
 
-renderGame()
+// renderGame()
 setInterval(function () {
-  game.onPlayerInput(null, input)
-  game.tick(fixedDeltaTime / 1000)
-  renderGame()
+  // game.onPlayerInput(null, input)
+  socket.emit('changeDir', input)
+  // game.tick(fixedDeltaTime / 1000)
+  // renderGame()
 }, fixedDeltaTime)
 
 const KEY = {

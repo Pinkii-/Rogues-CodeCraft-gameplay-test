@@ -42,8 +42,18 @@ class Turn {
       let bounds = player.getLocalBounds()
       if (bounds.top + bounds.height > this.minPosition + 40) {
         player.alive = false
+        // console.log('Un player menos')
       }
     })
+
+    let plataform = nextTurn.plataforms[0]
+    if (plataform) {
+      let bounds = plataform.getLocalBounds()
+      if (bounds.top + bounds.height > this.minPosition + 500) {
+        nextTurn.plataforms.shift()
+        // console.log('Una plataforma menos')
+      }
+    }
 
     let lastPlataform = 100000000000
     nextTurn.plataforms.forEach((plataform) => {
@@ -58,7 +68,7 @@ class Turn {
       let y = lastPlataform - 100
       let plataform = new Plataform(x, y, width, height)
       nextTurn.plataforms.push(plataform)
-      console.log('new plataform')
+      // console.log('new plataform')
     }
 
     nextTurn.minPosition -= 1
@@ -72,16 +82,11 @@ class Turn {
     return nextTurn
   }
 
-  addPlayer () {
-    let i = -1
-    this.players.forEach((p, ii) => {
-      if (p != null) i = ii
-    })
-
+  addPlayer (pos) {
     let player = new Player(500, 400)
 
-    if (i !== -1) {
-      this.players[i] = player
+    if (pos <= this.players.length) {
+      this.players[pos] = player
     } else {
       this.players.push(player)
       this.inputs.push(null)
