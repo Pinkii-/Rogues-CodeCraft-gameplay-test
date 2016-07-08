@@ -41,10 +41,10 @@ class Turn {
 
     nextTurn.players.forEach((player, i) => {
       if (!player.alive) return
+      player.score = this.minPosition
       let bounds = player.getLocalBounds()
       if (bounds.top + bounds.height > this.minPosition + 200) {
         player.alive = false
-        player.score = this.minPosition
         // console.log('Un player menos')
       }
     })

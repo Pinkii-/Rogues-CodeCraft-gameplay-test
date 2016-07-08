@@ -90,6 +90,10 @@ class Game {
       if (s) s.emit('game:state', {turn: this.turn, players: this.players, nTurn: this.currentTurn})
     })
   }
+
+  onPlayerName (socket, name) {
+    this.turn.players[this.players[socket.id]].name = name
+  }
 }
 
 exports.Game = Game

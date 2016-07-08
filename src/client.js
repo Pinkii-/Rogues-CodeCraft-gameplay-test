@@ -1,4 +1,5 @@
 /* global myCanvas */
+/* global myCanvasHighScores */
 const io = require('socket.io-client')
 const socket = io()
 const {Game} = require('./Game.js')
@@ -43,12 +44,19 @@ var fixedDeltaTime = (1 / 60.0) * 1000
 
 myCanvas.width = 1000
 myCanvas.height = Math.min(window.innerHeight, 665)
+myCanvasHighScores.width = window.innerWidth - 1000 - 10
+myCanvasHighScores.height = window.innerHeight - 10
 
 // const offsetFactor = 1
 // var edge = Math.min(window.innerWidth - 100, window.innerHeight - 100) / (game.turn.board.length * offsetFactor)
 const ctx = myCanvas.getContext('2d')
+const ctxHs = myCanvasHighScores.getContext('2d')
+ctxHs.font = '16px Georgia'
 
 function renderGame () {
+  ctxHs.fillStyle = 'black'
+  ctxHs.fillRect(0, 0, myCanvasHighScores.width, myCanvasHighScores.height)
+
   ctx.globalAlpha = alfaClear
   ctx.fillStyle = clearColor
   ctx.fillRect(0, 0, myCanvas.width, myCanvas.height)
@@ -61,10 +69,22 @@ function renderGame () {
   thingsToDraw.forEach((t) => {
     ctx.fillStyle = t.color
     ctx.fillRect(t.left, t.top, t.width, t.height)
+    if (t.color !== C.COLORS[0]) {
+
+    }
+  })
+
+  var lastPlayer = 20
+  game.turn.players.forEach((p, i) => {
+    ctxHs.fillStyle = C.COLORS[i + 1]
+    ctxHs.fillRect(20, lastPlayer, C.PLAYER_WIDTH, C.PLAYER_HEIGHT)
+    let score = Math.abs(Math.round(p.score)).toString()
+    ctxHs.fillText(score, 20 + C.PLAYER_WIDTH + 20, lastPlayer + (C.PLAYER_HEIGHT))
+    ctxHs.fillText(p.name, 20 + C.PLAYER_WIDTH + 20 + score.length * 8 + 20, lastPlayer + (C.PLAYER_HEIGHT))
+    lastPlayer += C.PLAYER_HEIGHT * 2
   })
 
   ctx.restore()
-
   // for (let i = 1; i < game.turn.board.length; ++i) {
   //   const row = game.turn.board[i]
   //   for (let j = 0; j < row.length; ++j) {

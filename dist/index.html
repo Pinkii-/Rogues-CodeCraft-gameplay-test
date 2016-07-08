@@ -8,9 +8,6 @@
       padding: 0;
       overflow: hidden;
     }
-    canvas {
-      align-self: center;
-    }
     #border {
       position: absolute;
       top: 0;
@@ -29,14 +26,20 @@
       background: black;
       border: 5px white solid;
       box-sizing: border-box;
+      text-align: center;
+      line-height: 40px;
+    }
+    #myCanvasHighScores {
+      position: absolute;
     }
   </style>
 </head>
 <body>
   <canvas id="myCanvas"></canvas>
   <div id="border">
+    <canvas id ="myCanvasHighScores"></canvas>
     <div id="instructions">
-      <p style="color: white">
+      <p style="color: white; border: 0; margin: 0;">
         WASD :D
       </p>
     </div>

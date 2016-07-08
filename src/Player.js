@@ -8,6 +8,8 @@ class Player {
     this.alive = true
     this.size = {x: C.PLAYER_WIDTH, y: C.PLAYER_HEIGHT}
     this.origin = {x: this.size.x / 2, y: this.size.y / 2}
+    this.name = ''
+    this.score = 0
   }
 
   applyInput (input) {

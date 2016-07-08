@@ -22,7 +22,12 @@ io.on('connection', (socket) => {
   game.onPlayerJoin(socket)
   socket.on('changeDir', onChangeDir)
   socket.on('disconnect', onDisconnect)
+  socket.on('playerName', onPlayerName)
 })
+
+function onPlayerName (name) {
+  game.onPlayerName(this, name)
+}
 
 function onChangeDir (dir, nTurn) {
   game.onPlayerInput(this, dir, nTurn)
