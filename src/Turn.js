@@ -9,6 +9,7 @@ class Turn {
     this.inputs = []
     this.plataforms = []
     this.minPosition = 600
+    this.started = false
   }
 
   initTurn () {
@@ -27,6 +28,7 @@ class Turn {
       player.applyInput(this.inputs[i])
       player.update(deltaTime)
       player.correctOutsideMap(0, 1000)
+      if (player.position.y > 500) player.position.y = 500
     })
 
     nextTurn.plataforms.forEach((plataform) => {
@@ -40,8 +42,9 @@ class Turn {
     nextTurn.players.forEach((player, i) => {
       if (!player.alive) return
       let bounds = player.getLocalBounds()
-      if (bounds.top + bounds.height > this.minPosition + 40) {
+      if (bounds.top + bounds.height > this.minPosition + 200) {
         player.alive = false
+        player.score = this.minPosition
         // console.log('Un player menos')
       }
     })
@@ -71,12 +74,17 @@ class Turn {
       // console.log('new plataform')
     }
 
-    nextTurn.minPosition -= 1
+    if (this.started) {
+      nextTurn.minPosition -= 1
+    }
 
     nextTurn.players.forEach((p) => {
       if (!p.alive) return
       let top = p.getLocalBounds().top
-      if (nextTurn.minPosition - 500 > top) nextTurn.minPosition = top + 500
+      if (nextTurn.minPosition - 500 > top) {
+        nextTurn.minPosition = top + 500
+        nextTurn.started = true
+      }
     })
 
     return nextTurn

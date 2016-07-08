@@ -7,6 +7,8 @@ const {Player} = require('./Player.js')
 const {Plataform} = require('./Plataform.js')
 const C = require('./constants.js')
 const clearColor = 'black'
+const username = window.prompt("What's your username?")
+var alfaClear = 0.2
 
 var game = new Game()
 
@@ -27,11 +29,11 @@ function onGameState (g) {
     plataforms[n] = aux
   }
   renderGame()
-  console.log('recibing shiet')
 }
 
 socket.on('connect', () => {
   socket.on('game:state', onGameState)
+  socket.emit('playerName', username)
 })
 
 // game.onPlayerJoin()
@@ -39,15 +41,15 @@ var input = 0
 
 var fixedDeltaTime = (1 / 60.0) * 1000
 
-myCanvas.width = window.innerWidth
-myCanvas.height = window.innerHeight
+myCanvas.width = 1000
+myCanvas.height = Math.min(window.innerHeight, 665)
 
 // const offsetFactor = 1
 // var edge = Math.min(window.innerWidth - 100, window.innerHeight - 100) / (game.turn.board.length * offsetFactor)
 const ctx = myCanvas.getContext('2d')
 
 function renderGame () {
-  ctx.globalAlpha = 0.2
+  ctx.globalAlpha = alfaClear
   ctx.fillStyle = clearColor
   ctx.fillRect(0, 0, myCanvas.width, myCanvas.height)
   ctx.save()
@@ -127,3 +129,6 @@ document.addEventListener('keyup', function (e) {
     default:
   }
 })
+
+document.getElementById('border').style.width = (window.innerWidth - 1000) + 'px'
+document.getElementById('instructions').style.width = document.getElementById('border').style.width

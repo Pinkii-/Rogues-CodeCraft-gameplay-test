@@ -11,9 +11,35 @@
     canvas {
       align-self: center;
     }
+    #border {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 1000px;
+      /*width: 300px;*/
+      background: black;
+      border: 5px white solid;
+      box-sizing: border-box;
+    }
+    #instructions {
+      position: absolute;
+      height: 40px;
+      bottom: 0px;
+      left: 0px;
+      background: black;
+      border: 5px white solid;
+      box-sizing: border-box;
+    }
   </style>
 </head>
 <body>
   <canvas id="myCanvas"></canvas>
+  <div id="border">
+    <div id="instructions">
+      <p style="color: white">
+        WASD :D
+      </p>
+    </div>
+  </div>
   <script src="bundle.js"></script>
 </body>
