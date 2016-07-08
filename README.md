@@ -10,3 +10,5 @@ A multiplayer infinite jumping race game.
 ## License
 
 MIT © [Gonzalo Diez]
+
+[Gonzalo Diez]: https://github.com/Pinkii-
